@@ -5,6 +5,7 @@ import {
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
 import { NativeBaseProvider } from "native-base";
+import { Loading } from "./src/components/Loading";
 
 export default function App() {
   const [fontLoaded] = useFonts({
@@ -18,7 +19,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      {fontLoaded ? <View /> : <View />}
+      {!fontLoaded ? <View /> : <Loading />}
     </NativeBaseProvider>
   );
 }
