@@ -8,6 +8,9 @@ import { NativeBaseProvider } from "native-base";
 import { Loading } from "./src/components/Loading";
 import { THEME } from "./src/theme";
 
+import { Routes } from "./src/routes";
+import { Home } from "./src/screens/Home";
+
 export default function App() {
   const [fontLoaded] = useFonts({
     Roboto_400Regular,
@@ -20,7 +23,7 @@ export default function App() {
         backgroundColor="transparent"
         translucent
       />
-      {fontLoaded ? <View /> : <Loading />}
+      {fontLoaded ? <Home /> : <Loading />}
     </NativeBaseProvider>
   );
 }
