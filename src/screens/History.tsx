@@ -30,6 +30,7 @@ export function History() {
         contentContainerStyle={
           exercises.length === 0 && { flex: 1, justifyContent: "center" }
         }
+        showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <Text color="gray.100" textAlign="center">
             Não há exercícios registrados ainda. {"\n"} Vamos fazer exercícios
