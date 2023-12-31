@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 import {
   Center,
   ScrollView,
@@ -7,8 +7,10 @@ import {
   Skeleton,
   Text,
   Heading,
+  useToast,
 } from "native-base";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 import { ScreenHeader } from "../components/ScreenHeader";
 import { UserPhoto } from "../components/UserPhoto";
@@ -23,16 +25,38 @@ export function Profile() {
     "https://github.com/Talissonb.png"
   );
 
+  const toast = useToast();
   async function handleUserPhotoSelect() {
-    const photoSelected = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
-      aspect: [4, 4],
-      allowsEditing: true,
-    });
-    console.log(photoSelected);
-    if (photoSelected.canceled) {
-      return;
+    try {
+      setPhotoIsLoading(true);
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+      });
+
+      if (photoSelected.canceled) {
+        return;
+      }
+
+      if (photoSelected.assets[0].uri) {
+        const photoInfo = await FileSystem.getInfoAsync(
+          photoSelected.assets[0].uri
+        );
+        if (photoInfo.exists && photoInfo.size / 1024 / 1024 > 3) {
+          return toast.show({
+            title: "Essa imagem é muito grande. Escolha uma de até 3MB.",
+            placement: "top",
+            bgColor: "red.500",
+          });
+        }
+        setUserPhoto(photoSelected.assets[0].uri);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPhotoIsLoading(false);
     }
   }
 
@@ -51,7 +75,7 @@ export function Profile() {
             />
           ) : (
             <UserPhoto
-              source={{ uri: "https://github.com/Talissonb.png" }}
+              source={{ uri: userPhoto }}
               alt="Imagem do usuário"
               size={PHOTO_SIZE}
               resizeMode="center"
@@ -72,7 +96,7 @@ export function Profile() {
           <Input value="Talisson@gmail.com" bg="gray.600" isDisabled />
         </Center>
         <VStack px={10} mt={12} mb={9}>
-          <Heading color="gray.200" fontSize="md" mb={2}>
+          <Heading color="gray.200" fontSize="md" mb={2} fontFamily="heading">
             Alterar senha
           </Heading>
           <Input placeholder="Senha antiga" secureTextEntry bg="gray.600" />
