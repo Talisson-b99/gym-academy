@@ -21,14 +21,14 @@ type AppRoutes = {
   history: undefined;
 };
 
-export type AppNavigatorRoutesProsp = BottomTabNavigationProp<AppRoutes>;
+export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
 
 const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 
 export function AppRoutes() {
   const { sizes, colors } = useTheme();
 
-  const iconSize = sizes[6];
+  const iconSize = sizes[7];
   return (
     <Navigator
       screenOptions={{

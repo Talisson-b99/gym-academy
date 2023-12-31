@@ -12,8 +12,13 @@ export function HistoryCard() {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Stack mr={5}>
-        <Heading color="white" fontSize="md" textTransform="capitalize">
+      <Stack mr={5} flex={1}>
+        <Heading
+          color="white"
+          fontSize="md"
+          textTransform="capitalize"
+          numberOfLines={1}
+        >
           Costas
         </Heading>
         <Text color="gray.100" fontSize="lg" numberOfLines={1}>
